@@ -165,16 +165,18 @@ body, html {
 
 .welcome-text {
   color: #66ccff; /* biru terang */
-  font-size: 3rem; /* besar */
+  font-size: 3rem;
   font-weight: 900;
-  text-shadow: 2px 2px 15px rgba(0,0,0,0.7); /* glow subtle */
+  text-align: center;
+  text-shadow: 4px 4px 10px rgba(0,0,0,0.9); /* shadow hitam tebal */
   margin-bottom: 10px;
   line-height: 1.2;
 }
 
 .welcome-subtext {
-  color: #cce0ff; /* biru terang lebih lembut */
+  color: #cce0ff;
   font-size: 1.5rem;
   font-weight: 600;
-  text-shadow: 1px 1px 8px rgba(0,0,0,0.6); /* glow ringan */
+  text-align: center;
+  text-shadow: 3px 3px 8px rgba(0,0,0,0.8); /* shadow hitam */
 }
