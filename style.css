@@ -291,3 +291,39 @@ button:hover {
   animation: soft-blink 1s infinite;
   font-weight: 700;
 }
+
+.rules-box {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.04);
+  border-left: 4px solid #3cff00;
+  border-radius: 8px;
+  color: #eaeaea;
+}
+
+.rules-box h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #3cff00;
+}
+
+.rules-box ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.rules-box li {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.rules-box strong {
+  color: #ffffff;
+}
+
+.rules-note {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #aaaaaa;
+}
+
