@@ -21,18 +21,19 @@ if (loginBtn && passwordInput && errorMsg) {
   });
 }
 
-// ===== HELPER FUNCTION: Inject Winner Highlight =====
 function highlightWinner(cell, winner) {
+  cell.style.backgroundColor = 'transparent';
   if (winner === "WAITING") {
-    cell.style.backgroundColor = "yellow";
-    cell.style.color = "#000";
+    cell.style.color = 'yellow';
   } else if (winner === "DRAW") {
-    cell.style.backgroundColor = "#00bfff";
-    cell.style.color = "#fff";
+    cell.style.color = '#00bfff';
   } else if (winner) {
-    cell.style.backgroundColor = "#28a745";
-    cell.style.color = "#fff";
+    cell.style.color = '#28a745'; 
+  } else {
+    cell.style.color = '';
   }
+}
+
 }
 
 // ===== MATCHES TABLE =====
