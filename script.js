@@ -68,4 +68,64 @@ Papa.parse(csvURL, {
       });
 
       ligaSelect.addEventListener("change", () => {
-        const value = ligaSel
+        const value = ligaSelect.value;
+        document.querySelectorAll("#matches-table tbody tr").forEach(row => {
+          row.style.display = (value === "All" || row.dataset.liga === value) ? "" : "none";
+        });
+      });
+    }
+
+    // ===== LEADERBOARD AUTO HITUNG =====
+    if (leaderboardBody) {
+      const leaderboard = {};
+
+      data.forEach(row => {
+        const player1 = row.PLAYER;
+        const player2 = row.PLAYER_2;
+        const winner = row.WINNER;
+        const draw = row.WINNER && row.WINNER.toUpperCase() === "DRAW";
+
+        [player1, player2].forEach(player => {
+          if (!player) return;
+          if (!leaderboard[player]) {
+            leaderboard[player] = {MATCHES:0, WIN:0, DRAW:0, LOSE:0, POINT:0};
+          }
+
+          leaderboard[player].MATCHES += 1;
+
+          if (draw) {
+            leaderboard[player].DRAW += 1;
+            leaderboard[player].POINT += 1;
+          } else if (player === winner) {
+            leaderboard[player].WIN += 1;
+            leaderboard[player].POINT += 3;
+          } else {
+            leaderboard[player].LOSE += 1;
+            leaderboard[player].POINT += 0;
+          }
+        });
+      });
+
+      // Convert ke array & sort by POINT
+      const leaderboardArray = Object.keys(leaderboard)
+        .map(name => ({NAMA: name, ...leaderboard[name]}))
+        .sort((a,b) => b.POINT - a.POINT);
+
+      // Inject ke table
+      leaderboardBody.innerHTML = '';
+      leaderboardArray.forEach((row, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${index+1}</td>
+          <td>${row.NAMA}</td>
+          <td>${row.MATCHES}</td>
+          <td>${row.WIN}</td>
+          <td>${row.DRAW}</td>
+          <td>${row.LOSE}</td>
+          <td>${row.POINT}</td>
+        `;
+        leaderboardBody.appendChild(tr);
+      });
+    }
+  }
+});
