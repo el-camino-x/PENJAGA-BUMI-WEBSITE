@@ -1,34 +1,24 @@
-// Password yang benar (ganti sesuai keinginan)
 const PASSWORD = "penjagabumi123";
-
-// Ambil elemen
 const loginBtn = document.getElementById("loginBtn");
 const passwordInput = document.getElementById("password");
 const errorMsg = document.getElementById("errorMsg");
 
-// Event klik tombol login
 loginBtn.addEventListener("click", () => {
   const enteredPassword = passwordInput.value.trim();
 
   if (enteredPassword === PASSWORD) {
-    // Password benar, redirect ke home.html
     window.location.href = "home.html";
   } else {
-    // Salah, tampil error
     errorMsg.textContent = "Password salah! Coba lagi.";
     passwordInput.value = "";
     passwordInput.focus();
   }
 });
 
-// Optional: tekan Enter di input password juga login
 passwordInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    loginBtn.click();
-  }
+  if (e.key === "Enter") loginBtn.click();
 });
 
-// Link CSV publik Google Sheet
 const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7c6Nn46_FqX3jOIJW5JIfwOwn6d8IoJczjSDjcgiyEKVaVpQttgNO54_RDJQblo0SRfB8Ksafs4Ab/pub?gid=1735155149&single=true&output=csv";
 
 const tableBody = document.querySelector('#matches-table tbody');
@@ -46,17 +36,16 @@ Papa.parse(csvURL, {
     data.forEach(row => {
       const liga = row.LIGA || '';
       const player1 = row.PLAYER || '';
-      const logo1 = row.TEAM || '';       // logo pertama
-      const team1 = row.HOME || '';       // nama tim pertama
+      const logo1 = row.TEAM || '';       
+      const team1 = row.HOME || '';       
       const poor = row.POOR || '';
-      const team2 = row.AWAY || '';       // nama tim kedua
-      const logo2 = row.LOGO_2 || '';     // logo kedua
+      const team2 = row.AWAY || '';       
+      const logo2 = row.LOGO_2 || '';     
       const player2 = row.PLAYER_2 || '';
       const realScore = row.REAL_SCORE || '';
       const totalScore = row.TOTAL_SCORE || '';
       const winner = row.WINNER || '';
 
-      // generate row tabel
       const tr = document.createElement('tr');
       tr.dataset.liga = liga;
       tr.innerHTML = `
@@ -77,7 +66,6 @@ Papa.parse(csvURL, {
       ligaSet.add(liga);
     });
 
-    // update filter dropdown
     ligaSelect.innerHTML = '<option value="All">All</option>';
     Array.from(ligaSet).forEach(liga => {
       const option = document.createElement('option');
@@ -86,7 +74,6 @@ Papa.parse(csvURL, {
       ligaSelect.appendChild(option);
     });
 
-    // filter dropdown
     ligaSelect.addEventListener("change", () => {
       const value = ligaSelect.value;
       const tableRows = document.querySelectorAll("#matches-table tbody tr");
