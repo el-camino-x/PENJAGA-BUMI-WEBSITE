@@ -1,3 +1,4 @@
+// ===== LOGIN =====
 const PASSWORD = "siaptugas";
 const loginBtn = document.getElementById("loginBtn");
 const passwordInput = document.getElementById("password");
@@ -20,34 +21,49 @@ if (loginBtn && passwordInput && errorMsg) {
   });
 }
 
-const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7c6Nn46_FqX3jOIJW5JIfwOwn6d8IoJczjSDjcgiyEKVaVpQttgNO54_RDJQblo0SRfB8Ksafs4Ab/pub?gid=1735155149&single=true&output=csv";
-const tableBody = document.querySelector('#matches-table tbody');
-const ligaSelect = document.getElementById('liga-select');
+// ===== HELPER FUNCTION: Inject Winner Highlight =====
+function highlightWinner(cell, winner) {
+  if (winner === "WAITING") {
+    cell.style.backgroundColor = "yellow";
+    cell.style.color = "#000";
+  } else if (winner === "DRAW") {
+    cell.style.backgroundColor = "#00bfff";
+    cell.style.color = "#fff";
+  } else if (winner) {
+    cell.style.backgroundColor = "#28a745";
+    cell.style.color = "#fff";
+  }
+}
 
-if (tableBody && ligaSelect) {
-  Papa.parse(csvURL, {
+// ===== MATCHES TABLE =====
+const matchesTableBody = document.querySelector("#matches-table tbody");
+const ligaSelect = document.getElementById("liga-select");
+const matchesCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7c6Nn46_FqX3jOIJW5JIfwOwn6d8IoJczjSDjcgiyEKVaVpQttgNO54_RDJQblo0SRfB8Ksafs4Ab/pub?gid=1735155149&single=true&output=csv";
+
+if (matchesTableBody && ligaSelect) {
+  Papa.parse(matchesCSV, {
     download: true,
     header: true,
     skipEmptyLines: true,
     complete: function(results) {
       const data = results.data;
       let ligaSet = new Set();
-      tableBody.innerHTML = '';
+      matchesTableBody.innerHTML = "";
 
       data.forEach(row => {
-        const liga = row.LIGA || '';
-        const player1 = row.PLAYER || '';
-        const logo1 = row.TEAM || '';
-        const team1 = row.HOME || '';
-        const poor = row.POOR || '';
-        const team2 = row.AWAY || '';
-        const logo2 = row.LOGO_2 || '';
-        const player2 = row.PLAYER_2 || '';
-        const realScore = row.REAL_SCORE || '';
-        const totalScore = row.TOTAL_SCORE || '';
-        const winner = row.WINNER || '';
+        const liga = row.LIGA || "";
+        const player1 = row.PLAYER || "";
+        const logo1 = row.TEAM || "";
+        const team1 = row.HOME || "";
+        const poor = row.POOR || "";
+        const team2 = row.AWAY || "";
+        const logo2 = row.LOGO_2 || "";
+        const player2 = row.PLAYER_2 || "";
+        const realScore = row.REAL_SCORE || "";
+        const totalScore = row.TOTAL_SCORE || "";
+        const winner = row.WINNER || "";
 
-        const tr = document.createElement('tr');
+        const tr = document.createElement("tr");
         tr.dataset.liga = liga;
         tr.innerHTML = `
           <td>${liga}</td>
@@ -60,15 +76,19 @@ if (tableBody && ligaSelect) {
           <td>${player2}</td>
           <td>${realScore}</td>
           <td>${totalScore}</td>
-          <td>${winner}</td>
+          <td class="winner-cell">${winner}</td>
         `;
-        tableBody.appendChild(tr);
+        matchesTableBody.appendChild(tr);
         ligaSet.add(liga);
+
+        const winnerCell = tr.querySelector(".winner-cell");
+        highlightWinner(winnerCell, winner);
       });
 
+      // ===== Dropdown Liga =====
       ligaSelect.innerHTML = '<option value="All">All</option>';
       Array.from(ligaSet).forEach(liga => {
-        const option = document.createElement('option');
+        const option = document.createElement("option");
         option.value = liga;
         option.textContent = liga;
         ligaSelect.appendChild(option);
@@ -81,15 +101,19 @@ if (tableBody && ligaSelect) {
           row.style.display = (value === "All" || row.dataset.liga === value) ? "" : "none";
         });
       });
+    },
+    error: function(err) {
+      console.error("Gagal load matches CSV:", err);
     }
   });
 }
 
-const leaderboardBody = document.querySelector('#leaderboard-table tbody');
-if (leaderboardBody) {
-  const leaderboardCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTkFDJVcyrG3EY9rv4jBvQc7JOAHAy9CsCMIFEB0oM1N3Afqi5ZuJCk5TD1hXKkFkMjq4VMEl3gHygg/pub?gid=1213844965&single=true&output=csv";
+// ===== LEADERBOARD TABLE =====
+const leaderboardBody = document.querySelector("#leaderboard-table tbody");
+const leaderboardCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTkFDJVcyrG3EY9rv4jBvQc7JOAHAy9CsCMIFEB0oM1N3Afqi5ZuJCk5TD1hXKkFkMjq4VMEl3gHygg/pub?gid=1213844965&single=true&output=csv";
 
-  leaderboardBody.innerHTML = '';
+if (leaderboardBody) {
+  leaderboardBody.innerHTML = "";
 
   Papa.parse(leaderboardCSV, {
     download: true,
@@ -97,9 +121,8 @@ if (leaderboardBody) {
     skipEmptyLines: true,
     complete: function(results) {
       const data = results.data;
-
       data.forEach(row => {
-        const tr = document.createElement('tr');
+        const tr = document.createElement("tr");
         tr.innerHTML = `
           <td>${row.RANK || ''}</td>
           <td>${row.NAMA || ''}</td>
