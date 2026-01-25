@@ -21,8 +21,10 @@ if (loginBtn && passwordInput && errorMsg) {
   });
 }
 
-// ===== MATCHES DATA =====
+// ===== MATCHES CSV URL =====
 const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7c6Nn46_FqX3jOIJW5JIfwOwn6d8IoJczjSDjcgiyEKVaVpQttgNO54_RDJQblo0SRfB8Ksafs4Ab/pub?gid=1735155149&single=true&output=csv";
+
+// ===== MATCHES TABLE =====
 const tableBody = document.querySelector('#matches-table tbody');
 const ligaSelect = document.getElementById('liga-select');
 
@@ -88,33 +90,79 @@ if (tableBody && ligaSelect) {
   });
 }
 
-// ===== LEADERBOARD HOME =====
-const leaderboardURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7c6Nn46_FqX3jOIJW5JIfwOwn6d8IoJczjSDjcgiyEKVaVpQttgNO54_RDJQblo0SRfB8Ksafs4Ab/pub?output=csv";
+// ===== LEADERBOARD =====
 const leaderboardBody = document.querySelector('#leaderboard-table tbody');
 
 if (leaderboardBody) {
-  Papa.parse(leaderboardURL, {
+  Papa.parse(csvURL, {  // Pakai CSV matches yang sama
     download: true,
     header: true,
     skipEmptyLines: true,
     complete: function(results) {
       const data = results.data;
+      const stats = {};
 
-      // Sort descending by POINT
-      data.sort((a, b) => Number(b.POINT) - Number(a.POINT));
+      data.forEach(row => {
+        const winPoints = 3;
+        const drawPoints = 1;
+        const losePoints = -2;
 
+        // Player 1
+        const p1 = row.PLAYER || '';
+        if (p1) {
+          if (!stats[p1]) stats[p1] = {MATCHES:0, WIN:0, DRAW:0, LOSE:0, POINT:0};
+          stats[p1].MATCHES++;
+          if (row.WINNER === p1) {
+            stats[p1].WIN++;
+            stats[p1].POINT += winPoints;
+          } else if (row.WINNER === 'DRAW') {
+            stats[p1].DRAW++;
+            stats[p1].POINT += drawPoints;
+          } else if (row.WINNER && row.WINNER !== p1) {
+            stats[p1].LOSE++;
+            stats[p1].POINT += losePoints;
+          }
+        }
+
+        // Player 2
+        const p2 = row.PLAYER_2 || '';
+        if (p2) {
+          if (!stats[p2]) stats[p2] = {MATCHES:0, WIN:0, DRAW:0, LOSE:0, POINT:0};
+          stats[p2].MATCHES++;
+          if (row.WINNER === p2) {
+            stats[p2].WIN++;
+            stats[p2].POINT += winPoints;
+          } else if (row.WINNER === 'DRAW') {
+            stats[p2].DRAW++;
+            stats[p2].POINT += drawPoints;
+          } else if (row.WINNER && row.WINNER !== p2) {
+            stats[p2].LOSE++;
+            stats[p2].POINT += losePoints;
+          }
+        }
+      });
+
+      // Convert stats object ke array
+      const leaderboardData = Object.keys(stats).map(name => ({
+        NAMA: name,
+        ...stats[name]
+      }));
+
+      // Sort by POINT descending
+      leaderboardData.sort((a,b)=>b.POINT - a.POINT);
+
+      // Inject ke tabel
       leaderboardBody.innerHTML = '';
-
-      data.forEach((row, index) => {
+      leaderboardData.forEach((row, index)=>{
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${index + 1}</td>
-          <td>${row.NAMA || ''}</td>
-          <td>${row.MATCHES || 0}</td>
-          <td>${row.WIN || 0}</td>
-          <td>${row.DRAW || 0}</td>
-          <td>${row.LOSE || 0}</td>
-          <td>${row.POINT || 0}</td>
+          <td>${index+1}</td>
+          <td>${row.NAMA}</td>
+          <td>${row.MATCHES}</td>
+          <td>${row.WIN}</td>
+          <td>${row.DRAW}</td>
+          <td>${row.LOSE}</td>
+          <td>${row.POINT}</td>
         `;
         leaderboardBody.appendChild(tr);
       });
