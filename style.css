@@ -403,3 +403,35 @@ button:hover {
     font-size: 1rem;
   }
 }
+
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1000;
+  pointer-events: none;
+}
+
+#video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: -999;
+}
+
+body, html {
+  background: transparent !important;
+}
+
+header,
+main,
+.main-content {
+  position: relative;
+  z-index: 10;
+}
