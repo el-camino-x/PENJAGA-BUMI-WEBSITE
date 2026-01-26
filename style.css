@@ -434,3 +434,38 @@ main,
   position: relative;
   z-index: 1;
 }
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #66ccff;
+  transition: text-shadow 0.3s ease;
+}
+
+.logo:hover {
+  text-shadow:
+    0 0 10px #66ccff,
+    0 0 25px #66ccff;
+}
+
+.logo::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(102,204,255,0.9),
+    transparent
+  );
+  animation: scan 5.8s infinite;
+}
+
+@keyframes scan {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
