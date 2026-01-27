@@ -7,7 +7,7 @@ if (loginBtn && passwordInput && errorMsg) {
   loginBtn.addEventListener("click", () => {
     const enteredPassword = passwordInput.value.trim();
     if (enteredPassword === PASSWORD) {
-      window.location.href = "home.html";
+      window.location.href = "homes.html";
     } else {
       errorMsg.textContent = "Password salah!";
       passwordInput.value = "";
