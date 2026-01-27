@@ -1,4 +1,4 @@
-const PASSWORD = "siaptugas";
+const PASSWORD = "agikuncir";
 const loginBtn = document.getElementById("loginBtn");
 const passwordInput = document.getElementById("password");
 const errorMsg = document.getElementById("errorMsg");
