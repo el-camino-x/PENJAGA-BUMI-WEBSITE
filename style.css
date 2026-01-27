@@ -12,7 +12,6 @@
   text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
 }
 
-/* ================= RESET & BASE ================= */
 
 * {
   margin: 0;
@@ -36,7 +35,6 @@ html {
   font-family: 'Arial Black', sans-serif;
 }
 
-/* ================= LOGIN ================= */
 
 .login-wrapper {
   display: flex;
@@ -107,7 +105,6 @@ button:hover {
   font-weight: 700;
 }
 
-/* ================= HEADER ================= */
 
 .header {
   display: flex;
@@ -146,7 +143,6 @@ button:hover {
   color: #cce0ff;
 }
 
-/* ================= MAIN ================= */
 
 .main-content {
   margin-top: 80px;
@@ -230,7 +226,6 @@ button:hover {
   margin-right: 6px;
 }
 
-/* ================= LEADERBOARD ================= */
 
 #leaderboard-table {
   width: 100%;
@@ -265,7 +260,6 @@ button:hover {
   background-color: rgba(102, 204, 255, 0.2);
 }
 
-/* ================= ANIMATION ================= */
 
 @keyframes soft-blink {
   0% { color: #ff4d4d; }
@@ -280,7 +274,6 @@ button:hover {
   font-weight: 700;
 }
 
-/* ================= RULES & NEWS ================= */
 
 .rules-box {
   margin-top: 24px;
@@ -320,7 +313,6 @@ button:hover {
   color: #99d6ff;
 }
 
-/* ================= VIDEO BG ================= */
 
 .video-bg {
   position: fixed;
@@ -342,7 +334,6 @@ button:hover {
   background: rgba(0, 0, 0, 0.6);
 }
 
-/* ================= FINAL OVERRIDE ================= */
 
 body,
 html {
@@ -387,4 +378,12 @@ main,
   0% { left: -100%; }
   50% { left: 100%; }
   100% { left: 100%; }
+}
+
+#matches-table td:nth-child(6),
+#matches-table td:nth-child(10),
+#matches-table td:nth-child(11) {
+  white-space: nowrap;
+  text-align: center;
+  font-weight: 600;
 }
