@@ -21,23 +21,27 @@ if (loginBtn && passwordInput && errorMsg) {
   });
 }
 
-// ===== HIGHLIGHT WINNER FUNCTION =====
-function highlightWinner(cell, winner) {
+// ===== HIGHLIGHT STATUS FUNCTION =====
+function highlightStatus(cell, status) {
   cell.style.color = "";
   cell.classList.remove("playing-blink");
 
-  switch (winner) {
-    case "BOOKED":
-      cell.style.color = "yellow";
+  switch (status.toUpperCase()) {
+    case "WIN":
+      cell.style.color = "#28a745"; // hijau
+      break;
+    case "LOSE":
+      cell.style.color = "#ff4d4d"; // merah
       break;
     case "DRAW":
-      cell.style.color = "#999";
+      cell.style.color = "#777"; // abu
       break;
     case "PLAYING":
-      cell.classList.add("playing-blink");
+      cell.classList.add("playing-blink"); // blink merah
       break;
     default:
-      if (winner) cell.style.color = "#28a745";
+      cell.style.color = "#fff"; // putih default
+      break;
   }
 }
 
@@ -51,25 +55,25 @@ if (matchesTableBody && ligaSelect) {
     download: true,
     header: true,
     skipEmptyLines: true,
+    newline: "\n", // supaya text LIGA tetap utuh
     complete: results => {
       const data = results.data;
       const ligaSet = new Set();
       matchesTableBody.innerHTML = "";
 
-  data.forEach(row => {
-    const liga = row.LIGA || "";
-    const date = row.DATE || "";
-    const player1 = row.PLAYER || "";
-    const logo1 = row.TEAM || "";
-    const home = row.HOME || "";
-    const poor = row.POOR || "";
-    const away = row.AWAY || "";
-    const logo2 = row.LOGO_2 || "";
-    const player2 = row.PLAYER_2 || "";
-    const realScore = row.REAL_SCORE || "";
-    const totalScore = row.TOTAL_SCORE || "";
-    const status = row.STATUS || ""; // <- ini harus STATUS
-  });
+      data.forEach(row => {
+        const liga = row.LIGA || "";
+        const date = row.DATE || "";
+        const player1 = row.PLAYER || "";
+        const logo1 = row.TEAM || "";
+        const home = row.HOME || "";
+        const poor = row.POOR || "";
+        const away = row.AWAY || "";
+        const logo2 = row.LOGO_2 || "";
+        const player2 = row.PLAYER_2 || "";
+        const realScore = row.REAL_SCORE || "";
+        const totalScore = row.TOTAL_SCORE || "";
+        const status = row.STATUS || "";
 
         const tr = document.createElement("tr");
         tr.dataset.liga = liga;
@@ -85,25 +89,14 @@ if (matchesTableBody && ligaSelect) {
           <td>${player2}</td>
           <td>${realScore}</td>
           <td>${totalScore}</td>
-          <td class="winner-cell">${winner}</td>
+          <td class="status-cell">${status}</td>
         `;
-
         matchesTableBody.appendChild(tr);
         ligaSet.add(liga);
 
-        // Highlight winner
-        const winnerCell = tr.querySelector(".winner-cell");
-        highlightWinner(winnerCell, winner);
-
-        // Warnai nama tim menang / seri
-        if (winner === "DRAW") {
-          tr.children[4].style.color = "#777"; // home
-          tr.children[6].style.color = "#777"; // away
-        } else if (winner === home) {
-          tr.children[4].style.color = "#28a745";
-        } else if (winner === away) {
-          tr.children[6].style.color = "#28a745";
-        }
+        // Highlight status
+        const statusCell = tr.querySelector(".status-cell");
+        highlightStatus(statusCell, status);
       });
 
       // Populate liga select
@@ -145,7 +138,6 @@ if (leaderboardBody) {
         const draw = Number(row.DRAW) || 0;
         const lose = Number(row.LOSE) || 0;
 
-        // Hitung winrate otomatis kalau kosong
         let winrate = row.WINRATE;
         if (!winrate) {
           winrate = matches > 0 ? ((win / matches) * 100).toFixed(2) + "%" : "0,00%";
