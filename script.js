@@ -95,22 +95,12 @@ winnerCell.classList.remove("playing-blink");
 
 // highlight berdasarkan status
 switch (status.toUpperCase()) {
-  case "WIN":
-    winnerCell.style.color = "#28a745"; // hijau
-    break;
-  case "LOSE":
-    winnerCell.style.color = "#ff4d4d"; // merah
-    break;
-  case "DRAW":
-    winnerCell.style.color = "#777"; // abu
-    break;
-  case "PLAYING":
-    winnerCell.classList.add("playing-blink"); // blink merah
-    break;
-  default:
-    winnerCell.style.color = "#fff"; // default putih kalau value lain
-    break;
-}      });
+  case "WIN": winnerCell.style.color = "#28a745"; break;
+  case "LOSE": winnerCell.style.color = "#ff4d4d"; break;
+  case "DRAW": winnerCell.style.color = "#777"; break;
+  case "PLAYING": winnerCell.classList.add("playing-blink"); break;
+  default: winnerCell.style.color = "#fff"; break;
+} });
 
       // Update filter liga
       ligaSelect.innerHTML = `<option value="All">All</option>`;
